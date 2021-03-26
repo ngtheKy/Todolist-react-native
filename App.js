@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, TextInput, TouchableOpacity, Text, ScrollView } from 'react-native'
 import Task from './task'
+import Icon from 'react-native-vector-icons/Feather'
 
 const App = () => {
 
@@ -12,8 +13,28 @@ const App = () => {
       settodos([...todos, { text: value, key: Date.now(), checked: false }])
       setvalue('')
     }
+    //console.log({ id })
+  }
+
+  const handleDeleteTodo = (x) => {
+    settodos(todos.filter((todo) => {
+      if (todo.key !== x) return true
+      //console.log(typeof (todo.key))
+    })
+    )
+    console.log({ x })
 
   }
+  const handleChecked = (x) => {
+    settodos(todos.map((todo) => {
+      if (todo.key === x) todo.checked = !todo.checked;
+      return todo;
+      //console.log(todo.key)
+    })
+    )
+    console.log({ x })
+  }
+
 
   return (
     <View>
@@ -31,12 +52,18 @@ const App = () => {
       >
         <Text>Press Here</Text>
       </TouchableOpacity>
+
+
       <ScrollView style={{ width: '100%' }}>
         {todos.map((task) => (
           <Task
             text={task.text}
             key={task.key}
-          />
+            checked={task.checked}
+            setChecked={() => handleChecked(task.key)}
+            delete={() => handleDeleteTodo(task.key)}
+          >
+          </Task>
         ))
         }
       </ScrollView>
